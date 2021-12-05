@@ -64,7 +64,7 @@ limiter, _ := goll.New(&goll.Config{
     WindowSize:        20 * time.Second,
 })
 
-res := limiter.Submit("tenantKey", 1)
+res, _ := limiter.Submit("tenantKey", 1)
 
 if res.Accepted {
     fmt.Println("yeee")

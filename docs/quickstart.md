@@ -53,7 +53,7 @@ and the requested load amount.
 The return value of the `Submit` method has an `Accepted` field which will be true if the request was accepted or false if rejected.
 
 ```go
-res := limiter.Submit("tenantKey", 1)
+res, _ := limiter.Submit("tenantKey", 1)
 
 if res.Accepted {
     fmt.Println("yeee")
@@ -71,7 +71,7 @@ In case of rejection a retry may be allowed after a delay. If the `RetryInAvaila
 You could easily use this field, for instance to return a 429 HTTP response from a web server together with a requested delay.
 
 ```go
-res := limiter.Submit("tenantKey", 1)
+res, _ := limiter.Submit("tenantKey", 5)
 
 if res.Accepted {
     fmt.Println("yeee")
@@ -84,15 +84,16 @@ if res.Accepted {
     time.Sleep(res.RetryIn)
 
     // resubmit after waiting
-    if limiter.Submit("tenantKey", requestedLoad).Accepted {
-        fmt.Printf("resubmitted request for load of %v was accepted \n", requestedLoad)
+    res, _ = limiter.Submit("tenantKey", 5)
+    if res.Accepted {
+        fmt.Println("resubmitted request for load was accepted")
 
     } else {
         panic("waited the required amount of time but the request was rejected")
     }
 
 } else {
-    fmt.Printf("request for load of %v was rejected with no retry allowed \n", requestedLoad)
+    fmt.Println("request was rejected with no retry allowed")
 }
 ```
 
@@ -144,7 +145,7 @@ newLimiter, _ := goll.New(&goll.Config{
 limiter := newLimiter.AsSingleTenant()
 
 // you can now submit/probe without tenant key
-res, _ := instance.Submit(1)
+res, _ := limiter.Submit(1)
 
 ```
 
@@ -172,7 +173,8 @@ A `Probe` method is available to check wether an amount of load would be availab
 This is useful for instance to check if the system is currently overloaded.
 
 ```go
-if !limiter.Probe("tenantKey", 1) {
+available, _ := limiter.Probe("tenantKey", 1)
+if !available {
     fmt.Println("No available load for this tenant")
 }
 ```
@@ -180,19 +182,3 @@ if !limiter.Probe("tenantKey", 1) {
 **NOTE:** do not use `Probe` to check for availability before `Submit` as you may create a race condition.
 
 Use `Submit` directly instead.
-
-```go
-// DON'T DO THIS
-if limiter.Probe(1) {
-    // something could happen between these two calls
-    // possible race condition
-    limiter.Submit("tenantKey", 1)
-    ...
-}
-
-// use Submit directly instead
-res := limiter.Submit("tenantKey", 1)
-if res.Accepted {
-    ...
-}
-```
