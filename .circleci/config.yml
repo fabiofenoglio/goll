@@ -39,7 +39,7 @@ jobs:
           name: Run coverage
           command: |
             go test -v -cover -race -coverprofile=/tmp/coverage-report/coverage.out
-          # goveralls -coverprofile=/tmp/coverage-report/coverage.out -service=circle-ci -repotoken=123
+            goveralls -coverprofile=/tmp/coverage-report/coverage.out -service=circle-ci -repotoken=$COVERALLS_TOKEN
       - store_test_results:
           path: /tmp/test-reports
 

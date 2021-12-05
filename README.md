@@ -3,8 +3,8 @@
 
 [![Documentation](https://godoc.org/github.com/fabiofenoglio/goll?status.svg)](http://godoc.org/github.com/fabiofenoglio/goll)
 [![Go Report Card](https://goreportcard.com/badge/github.com/fabiofenoglio/goll)](https://goreportcard.com/report/github.com/fabiofenoglio/goll)
-[![CircleCI](https://circleci.com/gh/fabiofenoglio/go-load-limiter/tree/main.svg?style=shield&circle-token=fcaa2477665d2641483384bb1e379e42c047e694)](https://circleci.com/gh/fabiofenoglio/go-load-limiter/tree/main)
-
+[![CircleCI](https://circleci.com/gh/fabiofenoglio/goll/tree/main.svg?style=shield)](https://circleci.com/gh/fabiofenoglio/goll/tree/main)
+[![Coverage Status](https://coveralls.io/repos/github/fabiofenoglio/goll/badge.svg?branch=main)](https://coveralls.io/github/fabiofenoglio/goll?branch=main)
 
 A highly configurable, feature-packed, load-aware limiter for Go.
 
